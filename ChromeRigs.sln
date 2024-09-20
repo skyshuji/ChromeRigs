@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChromeRigs.MVC", "ChromeRig
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChromeRigs.Entities", "ChromeRigs.Entities\ChromeRigs.Entities.csproj", "{A4768C46-5E35-4377-BFFF-7E719475DB94}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChromeRigs.Utils", "ChromeRigs.Utils\ChromeRigs.Utils.csproj", "{FCAC90A6-C1BF-4700-B126-7D169DB6D2DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A4768C46-5E35-4377-BFFF-7E719475DB94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4768C46-5E35-4377-BFFF-7E719475DB94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4768C46-5E35-4377-BFFF-7E719475DB94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCAC90A6-C1BF-4700-B126-7D169DB6D2DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCAC90A6-C1BF-4700-B126-7D169DB6D2DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCAC90A6-C1BF-4700-B126-7D169DB6D2DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCAC90A6-C1BF-4700-B126-7D169DB6D2DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

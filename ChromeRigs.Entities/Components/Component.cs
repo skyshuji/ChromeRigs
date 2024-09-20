@@ -13,7 +13,7 @@ namespace ChromeRigs.Entities.Components
         [Column(TypeName = "decimal(4, 2)")]
         public decimal Price { get; set; }
 
-        public List<PC> PCs { get; set; }
+        public List<PC> PCs { get; set; } = [];
 
     }
 }

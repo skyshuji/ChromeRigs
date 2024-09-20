@@ -1,4 +1,5 @@
 ﻿using ChromeRigs.Entities.Components;
+using ChromeRigs.Entities.Orders;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ChromeRigs.Entities.PCs
@@ -14,7 +15,9 @@ namespace ChromeRigs.Entities.PCs
         [Column(TypeName = "decimal(4, 2)")]
         public decimal Price { get; set; }
 
-        public List<Component> Components { get; set; }
+        public List<Component> Components { get; set; } = [];
+
+        public List<Order> Orders { get; set; } = [];
 
     }
 }
