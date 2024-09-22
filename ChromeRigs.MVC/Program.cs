@@ -1,7 +1,7 @@
 using ChromeRigs.MVC.Data;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 
 namespace ChromeRigs.MVC
@@ -20,6 +20,7 @@ namespace ChromeRigs.MVC
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddAutoMapper(typeof(Program));
             builder.Services.AddControllersWithViews();
 
             // Add localization support

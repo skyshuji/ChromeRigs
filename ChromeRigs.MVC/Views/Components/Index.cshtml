@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ChromeRigs.Entities.Components.Component>
+﻿@using ChromeRigs.MVC.Models.Components
+@model IEnumerable<ComponentViewModel>
 
 @{
     ViewData["Title"] = "Components";
@@ -29,31 +30,31 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var Component in Model)
+            @foreach (var component in Model)
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Name)
+                        @Html.DisplayFor(modelItem => component.Name)
                     </td>
                     <td>
-                        <span>$</span>@Html.DisplayFor(modelItem => item.Price)
+                        <span>$</span>@Html.DisplayFor(modelItem => component.Price)
                     </td>
                     <td>
-                        <a class="text-decoration-none" asp-action="Edit" asp-route-id="@item.Id" title="Edit">
+                        <a class="text-decoration-none" asp-action="Edit" asp-route-id="@component.Id" title="Edit">
                             <i class="fa-solid fa-pen text-primary"></i>
                         </a>
 
-                        <a class="text-decoration-none ms-2" asp-action="Details" asp-route-id="@item.Id" title="Details">
+                        <a class="text-decoration-none ms-2" asp-action="Details" asp-route-id="@component.Id" title="Details">
                             <i class="fa-solid fa-circle-info text-info"></i>
                         </a>
 
-                        <a class="text-decoration-none ms-2" asp-action="Delete" asp-route-id="@item.Id" title="Delete"
-                           data-bs-toggle="modal" data-bs-target="#delete_@Component.Id">
+                        <a class="text-decoration-none ms-2" asp-action="Delete" asp-route-id="@component.Id" title="Delete"
+                           data-bs-toggle="modal" data-bs-target="#delete_@component.Id">
                             <i class="fa-solid fa-trash text-danger"></i>
                         </a>
 
                         <!-- Delete Modal -->
-                        <div class="modal fade" id="delete_@Component.Id" tabindex="-1" aria-labelledby="delete_@Component.Id" aria-hidden="true">
+                        <div class="modal fade" id="delete_@component.Id" tabindex="-1" aria-labelledby="delete_@component.Id" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -65,14 +66,14 @@
                                         <h5>
                                             Are you sure you want to delete component
                                             <span class="text-danger">
-                                                @Component.Name
+                                                @component.Name
                                             </span>?
                                         </h5>
 
                                     </div>
                                     <div class="modal-footer">
                                         <form asp-action="Delete">
-                                            <input type="hidden" name="id" value="@Component.Id" />
+                                            <input type="hidden" name="id" value="@component.Id" />
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                             <button type="submit" class="btn btn-danger ms-1">Delete</button>
                                         </form>
