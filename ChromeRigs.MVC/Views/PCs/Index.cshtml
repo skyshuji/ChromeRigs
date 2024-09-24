@@ -1,15 +1,23 @@
-﻿@model IEnumerable<ChromeRigs.Entities.PCs.PC>
+﻿@using ChromeRigs.MVC.Models.PCs
+@model IEnumerable<PCViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "PCs";
 }
 
-<h1>Index</h1>
+<div class="container">
+
+<h1>PCs</h1>
+
+<hr />
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Create a New PC</a>
 </p>
-<table class="table">
+
+<hr />
+
+<table class="table table-hover table-striped data-tables">
     <thead>
         <tr>
             <th>
@@ -21,27 +29,70 @@
             <th>
                 @Html.DisplayNameFor(model => model.Price)
             </th>
-            <th></th>
+            <th>
+                Actions
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var pc in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => pc.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
+                @Html.DisplayFor(modelItem => pc.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
+                <span>$</span>@Html.DisplayFor(modelItem => pc.Price)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        <a class="text-decoration-none" asp-action="Edit" asp-route-id="@pc.Id" title="Edit">
+                            <i class="fa-solid fa-pen text-primary"></i>
+                        </a>
+
+                        <a class="text-decoration-none ms-2" asp-action="Details" asp-route-id="@pc.Id" title="Details">
+                            <i class="fa-solid fa-circle-info text-info"></i>
+                        </a>
+
+                        <a class="text-decoration-none ms-2" asp-action="Delete" asp-route-id="@pc.Id" title="Delete"
+                           data-bs-toggle="modal" data-bs-target="#delete_@pc.Id">
+                            <i class="fa-solid fa-trash text-danger"></i>
+                        </a>
+
+                        <!-- Delete Modal -->
+                        <div class="modal fade" id="delete_@pc.Id" tabindex="-1" aria-labelledby="delete_@pc.Id" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="deleteModalLabel">Delete PC</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <h5>
+                                            Are you sure you want to delete PC
+                                            <span class="text-danger">
+                                                @pc.Name
+                                            </span>?
+                                        </h5>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form asp-action="Delete">
+                                            <input type="hidden" name="id" value="@pc.Id" />
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-danger ms-1">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+</div>
+

@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using ChromeRigs.Entities.Components;
 using ChromeRigs.Entities.PCs;
 using ChromeRigs.MVC.Data;
+using ChromeRigs.MVC.Models.PCs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChromeRigs.MVC.Controllers
@@ -26,7 +29,13 @@ namespace ChromeRigs.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.PCs.ToListAsync());
+            var pcs = await _context
+                                .PCs
+                                .ToListAsync();
+
+            var pcVMs = _mapper.Map<List<PCViewModel>>(pcs);
+
+            return View(pcVMs);
         }
 
         [HttpGet]
@@ -50,21 +59,36 @@ namespace ChromeRigs.MVC.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var createUpdatePCVM = new CreateUpdatePCViewModel();
+            createUpdatePCVM.ComponentLookup = new MultiSelectList(_context.Components, "Id", "Name");
+
+            return View(createUpdatePCVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price")] PC pC)
+        public async Task<IActionResult> Create(CreateUpdatePCViewModel createUpdatePCViewModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(pC);
+                // TO DO
+                // TRANSFORM createUpdatePCViewModel -> PC
+
+                var pc = _mapper.Map<PC>(createUpdatePCViewModel);
+
+                // Update PC Components
+                await UpdatePCComponents(pc, createUpdatePCViewModel.ComponentsIds);
+
+                // Update PC Price
+                pc.Price = await GetPCPrice(pc.Components);
+
+                _context.Add(pc);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(pC);
+            return View(createUpdatePCViewModel);
         }
+
 
         public async Task<IActionResult> Edit(int? id)
         {
@@ -136,6 +160,31 @@ namespace ChromeRigs.MVC.Controllers
         {
             return _context.PCs.Any(e => e.Id == id);
         }
+
+        private async Task UpdatePCComponents(PC pc, List<int> componentsIds)
+        {
+            // TO DO
+            // CLEAR PC COMPONENTS
+            pc.Components.Clear();
+            // GET COMPONENTS FROM DATABASE USING THE COMPONENT IDS
+            var components = await _context
+                                        .Components
+                                        .Where(components => componentsIds.Contains(components.Id))
+                                        .ToListAsync();
+
+            // ADD COMPONENTS TO PC.COMPONENTS
+            pc.Components.AddRange(components);
+
+        }
+
+        private async Task<decimal> GetPCPrice(List<Component> components)
+        {
+            return components.Sum(component => component.Price);
+            var pcPriceWithProfit = pcPrice * 1.4m;
+
+            return
+        }
+
         #endregion
     }
 }

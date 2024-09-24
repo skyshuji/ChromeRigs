@@ -13,6 +13,6 @@ namespace ChromeRigs.MVC.Models.PCs
         [Column(TypeName = "decimal(4, 2)")]
         public decimal Price { get; set; }
 
-        public List<Components.PCViewModel> Components { get; set; } = [];
+        public List<Components.ComponentViewModel> Components { get; set; } = [];
     }
 }

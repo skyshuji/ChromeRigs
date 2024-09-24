@@ -31,7 +31,7 @@ namespace ChromeRigs.MVC.Controllers
                                         .Components
                                         .ToListAsync();
 
-            var componentVMs = _mapper.Map<List<Component>, List<PCViewModel>>(components);
+            var componentVMs = _mapper.Map<List<Component>, List<ComponentViewModel>>(components);
 
             return View(componentVMs);
         }

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace ChromeRigs.MVC.Models.PCs
 {
@@ -10,10 +12,15 @@ namespace ChromeRigs.MVC.Models.PCs
 
         public string Description { get; set; }
 
-        [Column(TypeName = "decimal(4, 2)")]
-        public decimal Price { get; set; }
-
+        [Display(Name = "Components")]
         public List<int> ComponentsIds { get; set; } = [];
+
+
+        // ========== Lookups
+
+
+        [ValidateNever]
+        public MultiSelectList ComponentLookup { get; set; }
 
     }
 }

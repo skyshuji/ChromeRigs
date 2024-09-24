@@ -10,7 +10,7 @@ namespace ChromeRigs.Entities.Orders
         public DateTime OrderTime { get; set; }
         public string Notes { get; set; }
 
-        [Column(TypeName = "decimal(4, 2)")]
+        [Column(TypeName = "decimal(18, 2)")]
         public decimal TotalPrice { get; set; }
 
         public int CustomerId { get; set; }

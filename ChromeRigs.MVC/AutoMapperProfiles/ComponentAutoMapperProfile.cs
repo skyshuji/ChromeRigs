@@ -10,7 +10,7 @@ namespace ChromeRigs.MVC.AutoMapperProfiles
         public ComponentAutoMapperProfile()
         {
 
-            CreateMap<Component, PCViewModel>();
+            CreateMap<Component, ComponentViewModel>();
             CreateMap<Component, ComponentDetailsViewModel>();
             CreateMap<CreateUpdateComponentViewModel, Component>().ReverseMap();
 

@@ -2,7 +2,7 @@
 
 namespace ChromeRigs.MVC.Models.Components
 {
-    public class PCViewModel
+    public class ComponentViewModel
     {
 
         public int Id { get; set; }

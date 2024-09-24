@@ -21,9 +21,11 @@
                 <div class="col-md-4">
 
                     <div class="form-group">
+                        <div class="form-floating">
+                        <input asp-for="FirstName" class="form-control" placeholder="First Name" />
                         <label asp-for="FirstName" class="control-label"></label>
-                        <input asp-for="FirstName" class="form-control" />
                         <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
                     </div>
 
                 </div>
@@ -31,9 +33,11 @@
                 <div class="col-md-4">
                     
                     <div class="form-group">
+                        <div class="form-floating">
+                        <input asp-for="LastName" class="form-control" placeholder="Last Name" />
                         <label asp-for="LastName" class="control-label"></label>
-                        <input asp-for="LastName" class="form-control" />
                         <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
                     </div>
 
                 </div>
@@ -41,12 +45,14 @@
                 <div class="col-md-4">
 
                     <div class="form-group">
+                        <div class="form-floating">
+                        <input asp-for="MobileNumber" class="form-control" placeholder="Mobile Number" />
                         <label asp-for="MobileNumber" class="control-label"></label>
-                        <input asp-for="MobileNumber" class="form-control" />
                         <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                        </div>
                     </div>
 
-                </div
+                </div>
 
             </div>
 
@@ -55,9 +61,11 @@
                 <div class="col-md-4">
 
                     <div class="form-group">
+                        <div class="form-floating">
+                        <input asp-for="Address" class="form-control" placeholder="Address" />
                         <label asp-for="Address" class="control-label"></label>
-                        <input asp-for="Address" class="form-control" />
-                        <span asp-validation-for="Address" class="text-danger"></span>
+                        <span asp-validation-for="Address" class="text-danger"></span>'
+                        </div>
                     </div>
 
                 </div>
@@ -65,9 +73,11 @@
                 <div class="col-md-4">
                     
                     <div class="form-group">
+                        <div class="form-floating">
+                        <select asp-for="Gender" class="form-control select-2" asp-items="@Html.GetEnumSelectList<Gender>()"></select>
                         <label asp-for="Gender" class="control-label"></label>
-                        <select asp-for="Gender" class="form-control" asp-items="@Html.GetEnumSelectList<Gender>()"></select>
                         <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
                     </div>
 
                 </div>
@@ -75,12 +85,14 @@
                 <div class="col-md-4">
 
                     <div class="form-group">
+                        <div class="form-floating">
+                        <input asp-for="DateOfBirth" class="form-control" placeholder="Date Of Birth" />
                         <label asp-for="DateOfBirth" class="control-label"></label>
-                      <input asp-for="DateOfBirth" class="form-control" />
                         <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                        </div>
                     </div>
 
-                </div
+                </div>
 
             </div>
 
