@@ -46,7 +46,7 @@ namespace ChromeRigs.MVC.Controllers
 
             var customer = await _context
                                         .Customers
-                                        .Where(customer == customer.Id == id)
+                                        .Where(customer => customer.Id == id)
                                         .Include(customer => customer.Orders)
                                         .SingleOrDefaultAsync();
             if (customer == null)

@@ -1,20 +1,19 @@
 ﻿using AutoMapper;
-using ChromeRigs.Entities.Components;
+using ChromeRigs.Entities.PCs;
 using ChromeRigs.MVC.Data;
-using ChromeRigs.MVC.Models.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChromeRigs.MVC.Controllers
 {
-    public class ComponentsController : Controller
+    public class PCsController : Controller
     {
         #region Data & Const
 
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
 
-        public ComponentsController(ApplicationDbContext context, IMapper mapper)
+        public PCsController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -27,13 +26,7 @@ namespace ChromeRigs.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var components = await _context
-                                        .Components
-                                        .ToListAsync();
-
-            var componentVMs = _mapper.Map<List<Component>, List<PCViewModel>>(components);
-
-            return View(componentVMs);
+            return View(await _context.PCs.ToListAsync());
         }
 
         [HttpGet]
@@ -44,19 +37,14 @@ namespace ChromeRigs.MVC.Controllers
                 return NotFound();
             }
 
-            var component = await _context
-                                        .Components
-                                        .Where(component => component.Id == id)
-                                        .SingleOrDefaultAsync();
-
-            if (component == null)
+            var pC = await _context.PCs
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (pC == null)
             {
                 return NotFound();
             }
 
-            var componentVM = _mapper.Map<ComponentDetailsViewModel>(component);
-
-            return View(componentVM);
+            return View(pC);
         }
 
         [HttpGet]
@@ -65,23 +53,19 @@ namespace ChromeRigs.MVC.Controllers
             return View();
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateUpdateComponentViewModel createUpdateComponentVM)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price")] PC pC)
         {
             if (ModelState.IsValid)
             {
-                var component = _mapper.Map<Component>(createUpdateComponentVM);
-
-                _context.Add(component);
+                _context.Add(pC);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(createUpdateComponentVM);
+            return View(pC);
         }
 
-        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -89,42 +73,33 @@ namespace ChromeRigs.MVC.Controllers
                 return NotFound();
             }
 
-            var component = await _context
-                                        .Components
-                                        .FindAsync(id);
-
-            if (component == null)
+            var pC = await _context.PCs.FindAsync(id);
+            if (pC == null)
             {
                 return NotFound();
             }
-
-            var createUpdateComponentVM = _mapper.Map<CreateUpdateComponentViewModel>(component);
-
-            return View(createUpdateComponentVM);
+            return View(pC);
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, CreateUpdateComponentViewModel createUpdateComponentVM)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price")] PC pC)
         {
-            if (id != createUpdateComponentVM.Id)
+            if (id != pC.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                var component = _mapper.Map<Component>(createUpdateComponentVM);
-
                 try
                 {
-                    _context.Update(component);
+                    _context.Update(pC);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ComponentExists(createUpdateComponentVM.Id))
+                    if (!PCExists(pC.Id))
                     {
                         return NotFound();
                     }
@@ -135,8 +110,7 @@ namespace ChromeRigs.MVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-
-            return View(createUpdateComponentVM);
+            return View(pC);
         }
 
 
@@ -144,27 +118,23 @@ namespace ChromeRigs.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var component = await _context
-                                        .Components
-                                        .FindAsync(id);
-
-            if (component == null)
+            var pC = await _context.PCs.FindAsync(id);
+            if (pC != null)
             {
-                return NotFound();
+                _context.PCs.Remove(pC);
             }
 
-            _context.Components.Remove(component);
             await _context.SaveChangesAsync();
-
             return RedirectToAction(nameof(Index));
         }
 
         #endregion
 
         #region Private Methods
-        private bool ComponentExists(int id)
+
+        private bool PCExists(int id)
         {
-            return _context.Components.Any(e => e.Id == id);
+            return _context.PCs.Any(e => e.Id == id);
         }
         #endregion
     }
