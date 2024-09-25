@@ -13,6 +13,11 @@ namespace ChromeRigs.MVC.AutoMapperProfiles
             CreateMap<PC, PCViewModel>();
             CreateMap<PC, PCDetailsViewModel>();
             CreateMap<CreateUpdatePCViewModel, PC>().ReverseMap();
+            CreateMap<PC, CreateUpdatePCViewModel>().ReverseMap()
+                .ForMember(createUpdatePCViewModel => createUpdatePCViewModel.ComponentIds,
+                    opts =>
+                        opts.MapFrom(pc => pc.Components.Select(component => component.Id))
+                );
 
         }
 

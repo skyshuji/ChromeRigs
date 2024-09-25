@@ -37,10 +37,7 @@ namespace ChromeRigs.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var pc = await _context
                                 .PCs
@@ -48,13 +45,9 @@ namespace ChromeRigs.MVC.Controllers
                                 .Where(pc => pc.Id == id)
                                 .SingleOrDefaultAsync();
 
-            if (pc == null)
-            {
-                return NotFound();
-            }
+            if (pc == null) return NotFound();
 
             var pcVM = _mapper.Map<PCDetailsViewModel>(pc);
-
             return View(pcVM);
         }
 
@@ -63,7 +56,6 @@ namespace ChromeRigs.MVC.Controllers
         {
             var createUpdatePCVM = new CreateUpdatePCViewModel();
             createUpdatePCVM.ComponentLookup = new MultiSelectList(_context.Components, "Id", "Name");
-
             return View(createUpdatePCVM);
         }
 
@@ -74,13 +66,8 @@ namespace ChromeRigs.MVC.Controllers
             if (ModelState.IsValid)
             {
                 var pc = _mapper.Map<PC>(createUpdatePCViewModel);
-
-                // Update PC Components
                 await UpdatePCComponents(pc, createUpdatePCViewModel.ComponentsIds);
-
-                // Update PC Price
-                pc.Price = await GetPCPrice(pc.Components);
-
+                pc.Price = GetPCPrice(pc.Components);
                 _context.Add(pc);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -91,30 +78,42 @@ namespace ChromeRigs.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var pc = await _context.PCs.FindAsync(id);
-            if (pc == null)
-            {
-                return NotFound();
-            }
-            return View(pc);
+            var pc = await _context
+                                .PCs
+                                .Include(pc => pc.Components)
+                                .Where(pc => pc.Id == id)
+                                .SingleOrDefaultAsync();
+
+            if (pc == null) return NotFound();
+
+            var pcVM = _mapper.Map<CreateUpdatePCViewModel>(pc);
+            pcVM.ComponentLookup = new MultiSelectList(_context.Components, "Id", "Name");
+
+            return View(pcVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price")] PC pc)
+        public async Task<IActionResult> Edit(int id, CreateUpdatePCViewModel createUpdatePCViewModel)
         {
-            if (id != pc.Id)
-            {
-                return NotFound();
-            }
+            if (id != createUpdatePCViewModel.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
+                var pc = await _context
+                                    .PCs
+                                    .Include(pc => pc.Components)
+                                    .Where(pc => pc.Id == id)
+                                    .SingleOrDefaultAsync();
+
+                if (pc == null) return NotFound();
+
+                _mapper.Map(createUpdatePCViewModel, pc);
+                await UpdatePCComponents(pc, createUpdatePCViewModel.ComponentsIds);
+                pc.Price = GetPCPrice(pc.Components);
+
                 try
                 {
                     _context.Update(pc);
@@ -122,18 +121,12 @@ namespace ChromeRigs.MVC.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PCExists(pc.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    if (!PCExists(createUpdatePCViewModel.Id)) return NotFound();
+                    else throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(pc);
+            return View(createUpdatePCViewModel);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -141,10 +134,7 @@ namespace ChromeRigs.MVC.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var pc = await _context.PCs.FindAsync(id);
-            if (pc != null)
-            {
-                _context.PCs.Remove(pc);
-            }
+            if (pc != null) _context.PCs.Remove(pc);
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -171,7 +161,7 @@ namespace ChromeRigs.MVC.Controllers
             pc.Components.AddRange(components);
         }
 
-        private async Task<decimal> GetPCPrice(List<Component> components)
+        private decimal GetPCPrice(List<Component> components)
         {
             var pcPrice = components.Sum(component => component.Price);
             var pcPriceWithProfit = pcPrice * 1.4m;
