@@ -29,12 +29,8 @@ namespace ChromeRigs.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var pcs = await _context
-                                .PCs
-                                .ToListAsync();
-
+            var pcs = await _context.PCs.ToListAsync();
             var pcVMs = _mapper.Map<List<PCViewModel>>(pcs);
-
             return View(pcVMs);
         }
 
@@ -46,14 +42,20 @@ namespace ChromeRigs.MVC.Controllers
                 return NotFound();
             }
 
-            var pC = await _context.PCs
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (pC == null)
+            var pc = await _context
+                                .PCs
+                                .Include(pc => pc.Components)
+                                .Where(pc => pc.Id == id)
+                                .SingleOrDefaultAsync();
+
+            if (pc == null)
             {
                 return NotFound();
             }
 
-            return View(pC);
+            var pcVM = _mapper.Map<PCDetailsViewModel>(pc);
+
+            return View(pcVM);
         }
 
         [HttpGet]
@@ -71,9 +73,6 @@ namespace ChromeRigs.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                // TO DO
-                // TRANSFORM createUpdatePCViewModel -> PC
-
                 var pc = _mapper.Map<PC>(createUpdatePCViewModel);
 
                 // Update PC Components
@@ -89,7 +88,7 @@ namespace ChromeRigs.MVC.Controllers
             return View(createUpdatePCViewModel);
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -97,19 +96,19 @@ namespace ChromeRigs.MVC.Controllers
                 return NotFound();
             }
 
-            var pC = await _context.PCs.FindAsync(id);
-            if (pC == null)
+            var pc = await _context.PCs.FindAsync(id);
+            if (pc == null)
             {
                 return NotFound();
             }
-            return View(pC);
+            return View(pc);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price")] PC pC)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price")] PC pc)
         {
-            if (id != pC.Id)
+            if (id != pc.Id)
             {
                 return NotFound();
             }
@@ -118,12 +117,12 @@ namespace ChromeRigs.MVC.Controllers
             {
                 try
                 {
-                    _context.Update(pC);
+                    _context.Update(pc);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PCExists(pC.Id))
+                    if (!PCExists(pc.Id))
                     {
                         return NotFound();
                     }
@@ -134,18 +133,17 @@ namespace ChromeRigs.MVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(pC);
+            return View(pc);
         }
-
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var pC = await _context.PCs.FindAsync(id);
-            if (pC != null)
+            var pc = await _context.PCs.FindAsync(id);
+            if (pc != null)
             {
-                _context.PCs.Remove(pC);
+                _context.PCs.Remove(pc);
             }
 
             await _context.SaveChangesAsync();
@@ -163,26 +161,22 @@ namespace ChromeRigs.MVC.Controllers
 
         private async Task UpdatePCComponents(PC pc, List<int> componentsIds)
         {
-            // TO DO
-            // CLEAR PC COMPONENTS
             pc.Components.Clear();
-            // GET COMPONENTS FROM DATABASE USING THE COMPONENT IDS
+
             var components = await _context
-                                        .Components
-                                        .Where(components => componentsIds.Contains(components.Id))
-                                        .ToListAsync();
+                .Components
+                .Where(c => componentsIds.Contains(c.Id))
+                .ToListAsync();
 
-            // ADD COMPONENTS TO PC.COMPONENTS
             pc.Components.AddRange(components);
-
         }
 
         private async Task<decimal> GetPCPrice(List<Component> components)
         {
-            return components.Sum(component => component.Price);
+            var pcPrice = components.Sum(component => component.Price);
             var pcPriceWithProfit = pcPrice * 1.4m;
 
-            return
+            return pcPriceWithProfit;
         }
 
         #endregion
