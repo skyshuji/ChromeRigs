@@ -1,0 +1,104 @@
+﻿@using ChromeRigs.MVC.Models.Orders
+@model IEnumerable<OrderViewModel>
+
+@{
+    ViewData["Title"] = "Orders";
+}
+
+<div class="container">
+    <h1>Orders</h1>
+
+    <hr />
+
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Create a New Order</a>
+    </p>
+
+    <hr />
+
+    <table id="DataTables_Table_0" class="table table-hover table-striped data-tables">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Id)
+                </th>
+                <th class="text-start">
+                    @Html.DisplayNameFor(model => model.First().OrderTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().CustomerFullName)
+                </th>
+                <th class="text-start">
+                    @Html.DisplayNameFor(model => model.First().TotalPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Notes)
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => order.Id)
+                    </td>
+                    <td class="text-start">
+                        @Html.DisplayFor(modelItem => order.OrderTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => order.CustomerFullName)
+                    </td>
+                    <td class="text-start">
+                        <span>$</span>@Html.DisplayFor(modelItem => order.TotalPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => order.Notes)
+                    </td>
+                    <td>
+                        <a class="text-decoration-none" asp-action="Edit" asp-route-id="@order.Id" title="Edit">
+                            <i class="fa-solid fa-pen text-primary"></i>
+                        </a>
+                        <a class="text-decoration-none ms-2" asp-action="Details" asp-route-id="@order.Id" title="Details">
+                            <i class="fa-solid fa-circle-info text-info"></i>
+                        </a>
+                        <a class="text-decoration-none ms-2" asp-action="Delete" asp-route-id="@order.Id" title="Delete"
+                           data-bs-toggle="modal" data-bs-target="#delete_@order.Id">
+                            <i class="fa-solid fa-trash text-danger"></i>
+                        </a>
+
+                        <!-- Delete Modal -->
+                        <div class="modal fade" id="delete_@order.Id" tabindex="-1" aria-labelledby="delete_@order.Id" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Order</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h5>
+                                            Are you sure you want to delete Order Number
+                                            <span class="text-danger">
+                                                @order.Id
+                                            </span>?
+                                        </h5>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form asp-action="Delete">
+                                            <input type="hidden" name="id" value="@order.Id" />
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-danger ms-1">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
