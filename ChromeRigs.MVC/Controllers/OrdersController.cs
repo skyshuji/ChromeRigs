@@ -61,7 +61,7 @@ namespace ChromeRigs.MVC.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var createUpdateOrderVM = new CreateUpdateOrderViewModel();
+            var createUpdateOrderVM = new CreateOrderViewModel();
 
             createUpdateOrderVM.CustomerLookup = new SelectList(_context.Customers, "Id", "FullName");
             createUpdateOrderVM.PCLookUp = new MultiSelectList(_context.PCs, "Id", "Name");
@@ -71,15 +71,15 @@ namespace ChromeRigs.MVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateUpdateOrderViewModel createUpdateOrderVM)
+        public async Task<IActionResult> Create(CreateOrderViewModel createOrderVM)
         {
             if (ModelState.IsValid)
             {
-                var order = _mapper.Map<Order>(createUpdateOrderVM);
+                var order = _mapper.Map<Order>(createOrderVM);
 
                 order.OrderTime = DateTime.Now;
 
-                await UpdateOrderPCs(order, createUpdateOrderVM.PCIds);
+                await UpdateOrderPCs(order, createOrderVM.PCIds);
 
                 order.TotalPrice = GetOrderTotalPrice(order.PCs);
 
@@ -89,10 +89,10 @@ namespace ChromeRigs.MVC.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            createUpdateOrderVM.CustomerLookup = new SelectList(_context.Customers, "Id", "FullName");
-            createUpdateOrderVM.PCLookUp = new MultiSelectList(_context.PCs, "Id", "Name");
+            createOrderVM.CustomerLookup = new SelectList(_context.Customers, "Id", "FullName");
+            createOrderVM.PCLookUp = new MultiSelectList(_context.PCs, "Id", "Name");
 
-            return View(createUpdateOrderVM);
+            return View(createOrderVM);
         }
 
         [HttpGet]
@@ -114,19 +114,19 @@ namespace ChromeRigs.MVC.Controllers
                 return NotFound();
             }
 
-            var orderVM = _mapper.Map<CreateUpdateOrderViewModel>(order);
+            var updateOrderVM = _mapper.Map<UpdateOrderViewModel>(order);
 
-            orderVM.CustomerLookup = new SelectList(_context.Customers, "Id", "FullName");
-            orderVM.PCLookUp = new MultiSelectList(_context.PCs, "Id", "Name");
+            updateOrderVM.CustomerLookup = new SelectList(_context.Customers, "Id", "FullName");
+            updateOrderVM.PCLookUp = new MultiSelectList(_context.PCs, "Id", "Name");
 
-            return View(orderVM);
+            return View(updateOrderVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, CreateUpdateOrderViewModel createUpdateOrderViewModel)
+        public async Task<IActionResult> Edit(int id, UpdateOrderViewModel updateViewModel)
         {
-            if (id != createUpdateOrderViewModel.Id)
+            if (id != updateViewModel.Id)
             {
                 return NotFound();
             }
@@ -146,10 +146,10 @@ namespace ChromeRigs.MVC.Controllers
                 }
 
                 // Patch the order
-                _mapper.Map(createUpdateOrderViewModel, order);
+                _mapper.Map(updateViewModel, order);
 
                 // Update Order PC
-                await UpdateOrderPCs(order, createUpdateOrderViewModel.PCIds);
+                await UpdateOrderPCs(order, updateViewModel.PCIds);
 
                 // Update Order Total Price
                 order.TotalPrice = GetOrderTotalPrice(order.PCs);
@@ -161,7 +161,7 @@ namespace ChromeRigs.MVC.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!OrderExists(createUpdateOrderViewModel.Id))
+                    if (!OrderExists(updateViewModel.Id))
                     {
                         return NotFound();
                     }
@@ -173,10 +173,10 @@ namespace ChromeRigs.MVC.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            createUpdateOrderViewModel.CustomerLookup = new SelectList(_context.Customers, "Id", "FullName");
-            createUpdateOrderViewModel.PCLookUp = new MultiSelectList(_context.PCs, "Id", "Name");
+            updateViewModel.CustomerLookup = new SelectList(_context.Customers, "Id", "FullName");
+            updateViewModel.PCLookUp = new MultiSelectList(_context.PCs, "Id", "Name");
 
-            return View(createUpdateOrderViewModel);
+            return View(updateViewModel);
         }
 
         public async Task<IActionResult> Delete(int? id)
