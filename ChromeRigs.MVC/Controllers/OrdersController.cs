@@ -103,26 +103,57 @@ namespace ChromeRigs.MVC.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _context
+                                    .Orders
+                                    .Include(order => order.PCs)
+                                    .Where(order => order.Id == id)
+                                    .SingleOrDefaultAsync();
+
             if (order == null)
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Address", order.CustomerId);
-            return View(order);
+
+            var orderVM = _mapper.Map<CreateUpdateOrderViewModel>(order);
+
+            orderVM.CustomerLookup = new SelectList(_context.Customers, "Id", "FullName");
+            orderVM.PCLookUp = new MultiSelectList(_context.PCs, "Id", "Name");
+
+            return View(orderVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,OrderTime,Notes,TotalPrice,CustomerId")] Order order)
+        public async Task<IActionResult> Edit(int id, CreateUpdateOrderViewModel createUpdateOrderViewModel)
         {
-            if (id != order.Id)
+            if (id != createUpdateOrderViewModel.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                // Get the order including PCs from the DB
+                var order = await _context
+                                        .Orders
+                                        .Include(order => order.PCs)
+                                        .Where(order => order.Id == id)
+                                        .SingleOrDefaultAsync();
+
+                if (order == null)
+                {
+                    return NotFound();
+                }
+
+                // Patch the order
+                _mapper.Map(createUpdateOrderViewModel, order);
+
+                // Update Order PC
+                await UpdateOrderPCs(order, createUpdateOrderViewModel.PCIds);
+
+                // Update Order Total Price
+                order.TotalPrice = GetOrderTotalPrice(order.PCs);
+
                 try
                 {
                     _context.Update(order);
@@ -130,7 +161,7 @@ namespace ChromeRigs.MVC.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!OrderExists(order.Id))
+                    if (!OrderExists(createUpdateOrderViewModel.Id))
                     {
                         return NotFound();
                     }
@@ -141,8 +172,11 @@ namespace ChromeRigs.MVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Address", order.CustomerId);
-            return View(order);
+
+            createUpdateOrderViewModel.CustomerLookup = new SelectList(_context.Customers, "Id", "FullName");
+            createUpdateOrderViewModel.PCLookUp = new MultiSelectList(_context.PCs, "Id", "Name");
+
+            return View(createUpdateOrderViewModel);
         }
 
         public async Task<IActionResult> Delete(int? id)

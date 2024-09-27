@@ -9,9 +9,6 @@ namespace ChromeRigs.MVC.AutoMapperProfiles
         public OrderAutoMapperProfile()
         {
 
-            CreateMap<Order, OrderViewModel>();
-            CreateMap<Order, OrderDetailsViewModel>();
-
             CreateMap<Order, OrderViewModel>()
                 .ForMember(dest => dest.CustomerFullName,
                            opts => opts.MapFrom(src => src.Customer.FullName));
@@ -19,6 +16,13 @@ namespace ChromeRigs.MVC.AutoMapperProfiles
             CreateMap<Order, OrderDetailsViewModel>();
 
             CreateMap<CreateUpdateOrderViewModel, Order>();
+
+            CreateMap<Order, CreateUpdateOrderViewModel>()
+                .ForMember(createUpdateOrderViewModel => createUpdateOrderViewModel.PCIds,
+                      opts =>
+                        opts.MapFrom(Order => Order.PCs.Select(pc => pc.Id))
+                );
+
 
 
         }

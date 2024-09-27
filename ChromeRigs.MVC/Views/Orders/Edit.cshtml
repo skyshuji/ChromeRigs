@@ -1,49 +1,53 @@
-﻿@model ChromeRigs.Entities.Orders.Order
+﻿@using ChromeRigs.MVC.Models.Orders
+@model CreateUpdateOrderViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Order";
 }
 
-<h1>Edit</h1>
+<div class="container">
+    <h1>
+        Edit Order
+        <span class="text-primary">#@Model.Id</span>
+    </h1>
 
-<h4>Order</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="OrderTime" class="control-label"></label>
-                <input asp-for="OrderTime" class="form-control" />
-                <span asp-validation-for="OrderTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Notes" class="control-label"></label>
-                <input asp-for="Notes" class="form-control" />
-                <span asp-validation-for="Notes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TotalPrice" class="control-label"></label>
-                <input asp-for="TotalPrice" class="form-control" />
-                <span asp-validation-for="TotalPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CustomerId" class="control-label"></label>
-                <select asp-for="CustomerId" class="form-control" asp-items="ViewBag.CustomerId"></select>
-                <span asp-validation-for="CustomerId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="form-floating">
+                    <select asp-for="CustomerId" class="form-control select-2" asp-items="@Model.CustomerLookup"></select>
+                    <label asp-for="CustomerId" class="control-label"></label>
+                    <span asp-validation-for="CustomerId" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mt-3">
+                    <select asp-for="PCIds" class="form-control select-2" asp-items="@Model.PCLookUp"></select>
+                    <label asp-for="PCIds" class="control-label"></label>
+                    <span asp-validation-for="PCIds" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mt-3">
+                    <input asp-for="Notes" class="form-control" placeholder="Notes" />
+                    <label asp-for="Notes" class="control-label"></label>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-4">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
