@@ -2,12 +2,12 @@
 @model CustomerDetailsViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Customer Details";
 }
 
 <div class="container">
     <h1>
-        Details
+        Customer Details
         <span class="text-primary">
             @Model.FullName
         </span>
@@ -51,8 +51,61 @@
     </div>
 
     <hr />
-    <h4>Customer Orders</h4>
-    @* TO DO  Add the custom orders *@
+
+    <h4>Orders History</h4>
+
+    @if (Model.Orders.Count > 0)
+    {
+        <table id="DataTables_Table_0" class="table table-hover table-striped data-tables">
+            <thead>
+                <tr>
+                    <th class="text-start">
+                        Order Number
+                    </th>
+                    <th class="text-start">
+                        Order Time
+                    </th>
+                    <th class="text-start">
+                        Total Price
+                    </th>
+                    <th class="text-start">
+                        Notes
+                    </th>
+                    <th class="text-start">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model.Orders)
+                {
+                    <tr>
+                        <td class="text-start">
+                            @Html.DisplayFor(modelItem => order.Id)
+                        </td>
+                        <td class="text-start">
+                            @Html.DisplayFor(modelItem => order.OrderTime)
+                        </td>
+                        <td class="text-start">
+                            <span>$</span>@Html.DisplayFor(modelItem => order.TotalPrice)
+                        </td>
+                        <td class="text-start">
+                            @Html.DisplayFor(modelItem => order.Notes)
+                        </td>
+                        <td class="text-start">
+                            <a class="text-decoration-none ms-2" asp-controller="Orders" asp-action="Details" asp-route-id="@order.Id" title="Details">
+                                <i class="fa-solid fa-circle-info text-info"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h4 class="fw-bold text-center">@Model.FullName has not placed any orders yet</h4>
+    }
 
     <hr />
 

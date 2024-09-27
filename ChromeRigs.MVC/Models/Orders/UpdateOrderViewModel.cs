@@ -21,5 +21,8 @@ namespace ChromeRigs.MVC.Models.Orders
         [ValidateNever]
         public MultiSelectList PCLookUp { get; set; }
 
+        [Display(Name = "Customer")]
+        public int CustomerId { get; set; }
+
     }
 }

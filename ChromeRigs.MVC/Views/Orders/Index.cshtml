@@ -19,7 +19,7 @@
     <table id="DataTables_Table_0" class="table table-hover table-striped data-tables">
         <thead>
             <tr>
-                <th>
+                <th class="text-start">
                     @Html.DisplayNameFor(model => model.First().Id)
                 </th>
                 <th class="text-start">
@@ -43,7 +43,7 @@
             @foreach (var order in Model)
             {
                 <tr>
-                    <td>
+                    <td class="text-start">
                         @Html.DisplayFor(modelItem => order.Id)
                     </td>
                     <td class="text-start">

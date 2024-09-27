@@ -1,4 +1,5 @@
-﻿using ChromeRigs.Utils.Enums;
+﻿using ChromeRigs.MVC.Models.Orders;
+using ChromeRigs.Utils.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace ChromeRigs.MVC.Models.Customers
@@ -16,8 +17,7 @@ namespace ChromeRigs.MVC.Models.Customers
         public Gender Gender { get; set; }
         public int Age { get; set; }
 
-        // TO DO 
-        //public List<OrderViewModel> Orders { get; set; }
+        public List<OrderViewModel> Orders { get; set; } = [];
 
     }
 }
