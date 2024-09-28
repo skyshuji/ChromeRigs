@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using ChromeRigs.Utils.Enums;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,6 +14,13 @@ namespace ChromeRigs.MVC.Models.Orders
         [Required]
         public List<int> PCIds { get; set; } = [];
 
+
+        [Required]
+        [Display(Name = "Payment Method")]
+        public PaymentMethod PaymentMethod { get; set; }
+
+        [Display(Name = "Paid")]
+        public bool IsPaid { get; set; }
         //########## Lookups
 
         [ValidateNever]

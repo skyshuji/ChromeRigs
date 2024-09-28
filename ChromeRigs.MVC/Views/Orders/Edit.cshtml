@@ -1,4 +1,5 @@
 ﻿@using ChromeRigs.MVC.Models.Orders
+@using ChromeRigs.Utils.Enums
 @model UpdateOrderViewModel
 
 @{
@@ -32,9 +33,20 @@
                 </div>
 
                 <div class="form-floating mt-3">
+                    <select asp-for="PaymentMethod" class="form-control select-2" asp-items="@Html.GetEnumSelectList<PaymentMethod>()"></select>
+                    <label asp-for="PaymentMethod" class="control-label"></label>
+                    <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mt-3">
                     <input asp-for="Notes" class="form-control" placeholder="Notes" />
                     <label asp-for="Notes" class="control-label"></label>
                     <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+
+                <div class="form-check form-switch mt-3">
+                    <input asp-for="IsPaid" class="form-check-input">
+                    <label asp-for="IsPaid" class="form-check-label">Paid?</label>
                 </div>
 
                 <div class="form-group mt-4">

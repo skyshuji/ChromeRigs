@@ -1,4 +1,5 @@
 ﻿@using ChromeRigs.MVC.Models.Orders
+@using ChromeRigs.Utils.Enums
 @model OrderDetailsViewModel
 
 @{
@@ -16,35 +17,97 @@
     <div>
         <dl class="row">
             <dt class="col-sm-2">
+
                 @Html.DisplayNameFor(model => model.OrderTime)
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.OrderTime)
             </dd>
+
+
+
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Notes)
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Notes)
             </dd>
+
+
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PaymentMethod)
+            </dt>
+            <dd class="col-sm-10">
+                
+                @switch (Model.PaymentMethod)
+                {
+                    case PaymentMethod.Cash:
+                        <i class="fa-solid fa-wallet text-success fs-4" title="Cash"></i>
+                        break;
+
+                    case PaymentMethod.CreditCard:
+                        <i class="fa-brands fa-cc-visa text-primary fs-4" title="Credit Card"></i>
+                        break;
+
+                    case PaymentMethod.PayPal:
+                        <i class="fa-brands fa-paypal color-paypal fs-4" title="PayPal"></i>
+                        break;
+
+                    case PaymentMethod.Crypto:
+                        <i class="fa-brands fa-bitcoin color-crypto fs-4" title="Crypto"></i>
+                        break;
+                }
+
+            </dd>
+
+
+
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.TotalPrice)
             </dt>
             <dd class="col-sm-10">
                 <span>$</span>@Html.DisplayFor(model => model.TotalPrice)
             </dd>
+
+
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.IsPaid)
+            </dt>
+            <dd class="col-sm-10">
+                
+                @if (Model.IsPaid)
+                {
+                    <i class="fa-solid fa-circle-check text-success fs-4" title="Paid"></i>
+                }
+                else
+                {
+                    <i class="fa-solid fa-circle-xmark text-danger fs-4" title="Not Paid"></i>
+                }
+
+            </dd>
+
+
+
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.CustomerFullName)
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.CustomerFullName)
             </dd>
+
+
+
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.CustomerAddress)
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.CustomerAddress)
             </dd>
+
+
+
         </dl>
     </div>
 

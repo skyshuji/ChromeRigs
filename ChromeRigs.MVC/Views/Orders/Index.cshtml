@@ -1,4 +1,5 @@
 ﻿@using ChromeRigs.MVC.Models.Orders
+@using ChromeRigs.Utils.Enums
 @model IEnumerable<OrderViewModel>
 
 @{
@@ -29,7 +30,13 @@
                     @Html.DisplayNameFor(model => model.First().CustomerFullName)
                 </th>
                 <th class="text-start">
+                    @Html.DisplayNameFor(model => model.First().PaymentMethod)
+                </th>
+                <th class="text-start">
                     @Html.DisplayNameFor(model => model.First().TotalPrice)
+                </th>
+                <th class="text-start">
+                    @Html.DisplayNameFor(model => model.First().IsPaid)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.First().Notes)
@@ -53,7 +60,41 @@
                         @Html.DisplayFor(modelItem => order.CustomerFullName)
                     </td>
                     <td class="text-start">
+
+                        @switch (order.PaymentMethod)
+                        {
+                            case PaymentMethod.Cash:
+                                <i class="fa-solid fa-wallet text-success fs-4" title="Cash"></i>
+                                break;
+
+                            case PaymentMethod.CreditCard:
+                                <i class="fa-brands fa-cc-visa text-primary fs-4" title="Credit Card"></i>
+                                break;
+
+                            case PaymentMethod.PayPal:
+                                <i class="fa-brands fa-paypal color-paypal fs-4" title="PayPal"></i>
+                                break;
+
+                            case PaymentMethod.Crypto:
+                                <i class="fa-brands fa-bitcoin color-crypto fs-4" title="Crypto"></i>
+                                break;
+                        }
+
+                    </td>
+                    <td class="text-start">
                         <span>$</span>@Html.DisplayFor(modelItem => order.TotalPrice)
+                    </td>
+                    <td class="text-start">
+                        
+                        @if(order.IsPaid)
+                        {
+                            <i class="fa-solid fa-circle-check text-success fs-4" title="Paid"></i>
+                        }
+                        else
+                        {
+                            <i class="fa-solid fa-circle-xmark text-danger fs-4" title="Not Paid"></i>
+                        }
+
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => order.Notes)

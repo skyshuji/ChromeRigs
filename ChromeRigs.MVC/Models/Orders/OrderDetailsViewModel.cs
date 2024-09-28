@@ -1,4 +1,5 @@
 ﻿using ChromeRigs.MVC.Models.PCs;
+using ChromeRigs.Utils.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -23,5 +24,12 @@ namespace ChromeRigs.MVC.Models.Orders
         public string CustomerAddress { get; set; }
 
         public List<PCViewModel> PCs { get; set; } = [];
+
+
+        [Display(Name = "Payment Method")]
+        public PaymentMethod PaymentMethod { get; set; }
+
+        [Display(Name = "Paid")]
+        public bool IsPaid { get; set; }
     }
 }

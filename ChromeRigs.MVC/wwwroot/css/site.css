@@ -64,3 +64,11 @@ body {
     border-color: #dee2e6 !important;
 }
 /*#endregion */
+
+.color-paypal {
+    color: #0079c1 !important;
+}
+
+.color-crypto {
+    color: #f79413 !important;
+}
