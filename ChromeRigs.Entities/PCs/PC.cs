@@ -15,6 +15,8 @@ namespace ChromeRigs.Entities.PCs
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Price { get; set; }
 
+        public string? ImageName { get; set; }
+
         public List<Component> Components { get; set; } = [];
 
         public List<Order> Orders { get; set; } = [];

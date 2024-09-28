@@ -115,45 +115,27 @@
 
     <h4>Ordered PCs</h4>
 
-    <table class="table table-hover table-striped data-tables">
-        <thead>
-            <tr>
-                <th class="text-start">
-                    Order Name
-                </th>
-                <th class="text-start">
-                    Description
-                </th>
-                <th class="text-start">
-                    Price
-                </th>
-                <th class="text-start">
-                    Actions
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var pc in Model.PCs)
-            {
-                <tr>
-                    <td class="text-start">
-                        @Html.DisplayFor(modelItem => pc.Name)
-                    </td>
-                    <td class="text-start">
-                        @Html.DisplayFor(modelItem => pc.Description)
-                    </td>
-                    <td class="text-start">
-                        <span>$</span>@Html.DisplayFor(modelItem => pc.Price)
-                    </td>
-                    <td class="text-start">
-                        <a class="text-decoration-none ms-2" asp-controller="PCs" asp-action="Details" asp-route-id="@pc.Id" title="Details">
-                            <i class="fa-solid fa-circle-info text-info"></i>
-                        </a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="row">
+
+        @foreach (var pc in Model.PCs)
+        {
+        <div class="col-lg-4 col-md-6">
+            <div class="pc">
+                <div class="card">
+                    <img src="~/imgs/pcs/@pc.ImageName" class="card-img-top" alt="@pc.Name">
+                    <div class="card-body">
+                        <h5 class="card-title chromerigs-title">
+                            <a class="text-decoration-none chromerigs-title" asp-controller="PCs" asp-action="Details" asp-route-id="@pc.Id" title="Details">
+                                @pc.Name
+                            </a>
+                        </h5>
+                        <p class="card-text">@pc.Description</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
 
     <div mt-4>
         <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Edit</a>

@@ -126,7 +126,7 @@ namespace ChromeRigs.MVC.Controllers
 
                 try
                 {
-                    _context.Update(createUpdateCustomerViewModel);
+                    _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

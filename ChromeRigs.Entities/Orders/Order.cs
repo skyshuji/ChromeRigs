@@ -23,6 +23,7 @@ namespace ChromeRigs.Entities.Orders
 
 
         public int CustomerId { get; set; }
+
         public Customer Customer { get; set; }
 
         public List<PC> PCs { get; set; } = [];
