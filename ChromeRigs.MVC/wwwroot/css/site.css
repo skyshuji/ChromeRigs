@@ -97,3 +97,14 @@ body {
 .cls-more-semi-purp {
     opacity: 50% !important;
 }
+
+.navbar-expand-sm .navbar-nav .nav-link {
+    color: #000000 !important;
+    transition: 0.3s;
+}
+
+.navbar-expand-sm .navbar-nav .nav-link:hover {
+    color: #b363d6 !important;
+    font-weight: bold !important;
+    transition: 0.3s;
+}
