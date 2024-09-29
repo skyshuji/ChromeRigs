@@ -143,3 +143,45 @@ body {
     color: #b363d6 !important;
     font-weight: bold !important;
 }
+
+.fs-7 {
+    font-size: 0.85rem !important;
+}
+
+.social-links .social-link {
+    width: 40px;
+    height: 40px;
+    background-color: #b363d6;
+    text-align: center;
+    font-size: 1.4rem;
+    padding-top: 0.2rem !important;
+}
+
+
+
+.back-to-top {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background: #b363d6;
+    text-align: center;
+    border-radius: 4px;
+    font-size: 1.5rem;
+}
+
+    .back-to-top a {
+        color: #fff;
+        display: block;
+        width: 46px;
+        height: 46px;
+        padding-top: 4px;
+    }
+
+    .back-to-top:hover a {
+        background: #f3e6fc;
+    }
+
+.slick-slide {
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
