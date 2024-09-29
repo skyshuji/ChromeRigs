@@ -108,3 +108,24 @@ body {
     font-weight: bold !important;
     transition: 0.3s;
 }
+
+.service-card {
+    text-align: center !important;
+    background: #fff !important;
+    border-radius: 25px !important;
+    padding: 2rem 1rem 1rem !important;
+}
+
+.service-card .icon i {
+    color: #b363d6 !important;
+    font-size: 2rem !important;
+}
+
+.service-card .title {
+    margin-top: 1rem !important;
+    font-weight: bold !important;
+}
+
+.service-card .text {
+    margin-top: 1rem !important;
+}
