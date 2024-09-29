@@ -73,6 +73,27 @@ body {
     color: #f79413 !important;
 }
 
-.chromerigs-title {
+.text-chromerigs-color {
     color: #b363d6 !important;
+}
+
+.btn-chromerigs-color {
+    background-color: #b363d6 !important;
+    color: #f3e6fc !important;
+}
+
+.cls-bg-section {
+    background-color: #f3e6fc !important;
+}
+
+.cls-image {
+    height: 11rem !important;
+}
+
+.cls-semi-purp {
+    opacity: 90% !important;
+}
+
+.cls-more-semi-purp {
+    opacity: 50% !important;
 }

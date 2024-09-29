@@ -12,7 +12,7 @@
     <hr />
 
     <p>
-        <a asp-action="Create" class="btn btn-primary">Create a New PC</a>
+        <a asp-action="Create" class="btn btn-chromerigs-color">Create a New PC</a>
     </p>
 
     <hr />
@@ -26,8 +26,8 @@
                     <div class="card">
                         <img src="~/imgs/pcs/@pc.ImageName" class="card-img-top" alt="@pc.Name">
                         <div class="card-body">
-                            <h5 class="card-title chromerigs-title">
-                                <a class="text-decoration-none chromerigs-title" asp-action="Details" asp-route-id="@pc.Id" title="Details">
+                            <h5 class="card-title text-chromerigs-color">
+                                <a class="text-decoration-none text-chromerigs-color" asp-action="Details" asp-route-id="@pc.Id" title="Details">
                                     @pc.Name
                                 </a>
                             </h5>
@@ -36,7 +36,7 @@
                         <div class="card-footer text-end">
 
                             <a class="text-decoration-none" asp-action="Edit" asp-route-id="@pc.Id" title="Edit">
-                                <i class="fa-solid fa-pen text-primary"></i>
+                                <i class="fa-solid fa-pen text-chromerigs-color"></i>
                             </a>
 
                             <a class="text-decoration-none ms-2" asp-action="Delete" asp-route-id="@pc.Id" title="Delete"
