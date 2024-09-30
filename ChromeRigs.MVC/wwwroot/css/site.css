@@ -185,3 +185,23 @@ body {
     margin-left: 1rem;
     margin-right: 1rem;
 }
+
+.card {
+    transition: transform 0.3s ease;
+}
+
+    .card:hover {
+        transform: scale(1.04); 
+    }
+
+
+.fade-in {
+    opacity: 0; 
+    animation: fadeIn 1s forwards; 
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1; 
+    }
+}
