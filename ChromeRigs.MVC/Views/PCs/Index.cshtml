@@ -39,6 +39,10 @@
                                 <i class="fa-solid fa-pen text-chromerigs-color"></i>
                             </a>
 
+                            <a class="text-decoration-none ms-2" asp-action="Details" asp-route-id="@pc.Id" title="Details">
+                                <i class="fa-solid fa-circle-info text-info"></i>
+                            </a>
+
                             <a class="text-decoration-none ms-2" asp-action="Delete" asp-route-id="@pc.Id" title="Delete"
                                data-bs-toggle="modal" data-bs-target="#delete_@pc.Id">
                                 <i class="fa-solid fa-trash text-danger"></i>
